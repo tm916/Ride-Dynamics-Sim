@@ -1,2 +1,3 @@
-# Suspension-Dynamics
-A neat project to practice the use of models to make decisions on parameter
+# F1-Ride-Dynamics-Sim
+Planned to be an animated F1 quarter car model
+
