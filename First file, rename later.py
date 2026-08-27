@@ -24,13 +24,13 @@ unsprung_v = []
 unsprung_z = []
 time_array = np.arange(0, 5, dt)
 
-#----- Actual Calculator ------#
+#----- Time response Actual Calculator ------#
 
-for i in range (len(time_array)):
+#for i in range (len(time_array)):
 
-    t = time_array[i] # hopefully this iterates through the time array 
-    z_r = Amp * np.sin(omega * t) # compute z_r and v_r at time t, modelling as sine wave for now
-    v_r = Amp * omega * np.cos(omega * t)
+    #t = time_array[i] # hopefully this iterates through the time array 
+    #z_r = Amp * np.sin(omega * t) # compute z_r and v_r at time t, modelling as sine wave for now
+    #v_r = Amp * omega * np.cos(omega * t)
     
     a_s = (1/m_s) * (k_s * (z_u - z_s) + b_s * (v_u - v_s))
     a_u = (1/m_u) * (k_s * (z_s - z_u) + b_s * (v_s - v_u) + k_u * (z_r - z_u) + b_u * (v_r - v_u))
@@ -62,4 +62,32 @@ plt.ylabel('Position')
 plt.legend()
 
 plt.show()
+
+#------Frequency Response ------#
+
+freq_array = np.logspace (-1,np.log(30), 500)
+
+for i in range (len(freq_array)):
+    omega = freq_array[i]
+    
+    z_r = Amp * np.sin(omega * t) # compute z_r and v_r at time t, modelling as sine wave for now
+    v_r = Amp * omega * np.cos(omega * t)
+    
+    a_s = (1/m_s) * (k_s * (z_u - z_s) + b_s * (v_u - v_s))
+    a_u = (1/m_u) * (k_s * (z_s - z_u) + b_s * (v_s - v_u) + k_u * (z_r - z_u) + b_u * (v_r - v_u))
+
+    v_s += a_s * dt # euler-cromer method for numerical integration
+    v_u += a_u * dt
+
+    z_s += v_s * dt # ...and for position
+    z_u += v_u * dt
+    
+    sprung_v.append(v_s) # append to the empty lists
+    sprung_z.append(z_s)
+    unsprung_v.append(v_u)
+    unsprung_z.append(z_u)
+    
+    
+
+
     
