@@ -1,3 +1,7 @@
+#Initial attempt pre-Verlett integrator, slower convergence
+
+
+
 # -- initial simulation -- NO DOWNFORCE #
 import numpy as np
 import matplotlib.pyplot as plt
