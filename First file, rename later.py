@@ -1,4 +1,4 @@
-#Initial attempt pre-Verlett integrator, slower convergence
+#Initial attempt pre-Verlet integrator, slower convergence
 
 
 
