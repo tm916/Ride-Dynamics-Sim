@@ -120,9 +120,9 @@ The script shows the baseline velocity and displacement plots. Then it runs the 
 
 | File | Contents |
 |---|---|
-| `quarter_car_verlet.py` | Model, baseline plots and parameter study |
-| `legacy/quarter_car_euler.py` | First version, Euler–Cromer integration |
-| `figures/` | Saved plots |
+| `Verlet_Integrator.py` | Model, baseline plots and parameter study |
+| `Euler_Integrator_old.py` | First version, Euler–Cromer integration |
+
 
 ## Planned
 
