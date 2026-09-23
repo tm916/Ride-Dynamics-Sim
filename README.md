@@ -4,7 +4,6 @@ A Python model of one corner of a Formula Student car. It simulates how the body
 
 Parameters are loosely based on the Cambridge University Full Blue Racing car.
 
-![Baseline response](figures/baseline_response.png)
 
 ## Model
 
