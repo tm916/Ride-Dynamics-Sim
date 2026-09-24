@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def simulate (k_s, b_s, end_time=5, dt = 2**(-10), omega = 31.4): # Pass in the damper and spring values
     
     # --- Setting some values I don't expect to change, loosely based off of formula student --- # 
-    Amp = 0.02 # Amplitude of some bumps
+    Amp = 0.005 # Amplitude of some bumps
     m_u = 11.2 # Estimate
     m_s = 68.8 # Driver + car approx 320kg for Cambridge, divide by 4, subtract 11.2
     k_u = 100000
@@ -110,11 +110,23 @@ for k in k_values:
         results.append([k, b, amp])
 
 results = np.array(results)
-np.savetxt('amplitude_study.csv', results, delimiter=',',
+np.savetxt('amplitude_study_final.csv', results, delimiter=',',
            header='k_s,b_s,amp_body', comments='')
 
-
-    
+# ----- More plotting -----
+plt.figure(3)
+for k in k_values:
+    rows = results[:, 0] == k
+    plt.plot(results[rows, 1], results[rows, 2] / 0.005, marker='o',
+             label=f'k_s = {k:.0f} N/m')
+plt.xlabel('Damper wheel rate b_s (Ns/m)')
+plt.ylabel('Body amplitude / road amplitude')
+plt.title('Body amplitude ratio, 5 Hz road input')
+plt.legend()
+plt.show()
+# Extra for the comparision with Simulink model
+np.savetxt('python_zs.csv', np.column_stack([time_array, array_sprung_z]),
+           delimiter=',', header='t,z_s', comments='')
     
 
 

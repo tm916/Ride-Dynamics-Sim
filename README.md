@@ -4,6 +4,7 @@ A Python model of one corner of a Formula Student car. It simulates how the body
 
 Parameters are loosely based on the Cambridge University Full Blue Racing car.
 
+![Baseline response](figures/baseline_response.png)
 
 ## Model
 
@@ -39,7 +40,7 @@ Assumptions:
 | `b_s` | 1,500 Ns/m | Damper wheel rate (baseline) | Chosen |
 | `k_u` | 100,000 N/m | Tyre vertical stiffness | Estimate |
 | `b_u` | 150 Ns/m | Tyre damping | Estimate |
-| `A` | 0.02 m | Road amplitude | Chosen |
+| `A` | 0.005 m | Road amplitude | Chosen so the tyre stays in contact (see below) |
 | `ω` | 31.4 rad/s (5 Hz) | Road frequency | Chosen |
 
 `k_s` and `b_s` are wheel rates. The actual spring and damper rates are the wheel rates divided by MR², where MR is the motion ratio.
@@ -95,15 +96,19 @@ A typical ride damping target is ζ ≈ 0.5–0.8, so the damping range brackets
 
 ## Baseline result
 
-At `k_s` = 25,000 N/m and `b_s` = 1,500 Ns/m, the steady-state body amplitude is 18.5 mm for a 20 mm road input.
+At `k_s` = 25,000 N/m and `b_s` = 1,500 Ns/m, the steady-state body amplitude is 4.6 mm for a 5 mm road input (ratio 0.92).
 
-## MATLAB analysis (in progress)
+Across the sweep, the amplitude ratio rises from 0.38 (soft, lightly damped) to 1.73 (stiff, heavily damped). The road frequency is above the body mode, so stiffness and damping both pass more road motion into the body.
 
-The MATLAB script loads `amplitude_study.csv` and plots the body amplitude as a surface over `k_s` and `b_s`.
+**Road amplitude.** A first version used a 20 mm input. At that amplitude, the dynamic tyre deflection (about 13.5 mm) is more than the static tyre deflection (about 7.8 mm), so a real tyre would leave the road. A linear tyre spring cannot show this. The model is linear, so all results scale with input amplitude. The input is now 5 mm, and every case in the sweep keeps the tyre in contact.
 
-## Simulink cross-check (in progress)
+## MATLAB analysis
 
-A Simulink model of the same equations acts as the reference. It uses ode45 at a tight tolerance. The Python and Simulink results are compared point by point at the same time steps.
+The MATLAB script loads `amplitude_study.csv` and plots the body amplitude ratio as a surface and as a contour map over `k_s` and `b_s`.
+
+## Simulink cross-check
+
+A Simulink model of the same equations acts as the reference. It uses ode45 at a tight tolerance. The Simulink body displacement is interpolated onto the Python time steps and compared point by point. The maximum difference is 0.016% of the steady-state body amplitude.
 
 ## How to run
 
@@ -122,10 +127,9 @@ The script shows the baseline velocity and displacement plots. Then it runs the 
 |---|---|
 | `Verlet_Integrator.py` | Model, baseline plots and parameter study |
 | `Euler_Integrator_old.py` | First version, Euler–Cromer integration |
-
+| `figures/` | Saved plots |
 
 ## Planned
 
 - A transmissibility sweep over road frequency.
 - Aerodynamic downforce.
-
